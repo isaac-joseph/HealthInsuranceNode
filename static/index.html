@@ -1,106 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Insurance Risk Calculator API Tester</title>
+</head>
 
-<script>
-    const serverUrl =
-        'https://healthinsurancenode-fuh2c9fja5a8heb3.centralus-01.azurewebsites.net';
+<body>
 
-    async function wakeServer() {
-        try {
-            const response = await fetch(serverUrl + '/api/ping');
-            const data = await response.json();
+    <h1>Health Insurance Risk Calculator API</h1>
 
-            if (!response.ok) {
-                throw new Error(data.message || 'Wake request failed.');
-            }
+    <p>This page tests the RESTful APIs provided by the Node.js server.</p>
 
-            document.getElementById('result').textContent = data.message;
-        } catch (error) {
-            console.error('Wake Server error:', error);
+    <button onclick="wakeServer()">Wake Server</button>
+    <button onclick="testCalculator()">Test Calculator API</button>
 
-            document.getElementById('result').textContent =
-                'Error connecting to server: ' + error.message;
-        }
-    }
+    <p id="result"></p>
 
-    async function testCalculator() {
-        const result = document.getElementById('result');
+    
+	<script>
+		const serverUrl =
+			'https://healthinsurancenode-fuh2c9fja5a8heb3.centralus-01.azurewebsites.net';
 
-        try {
-            // Test blood pressure API.
-            const bpResponse = await fetch(
-                serverUrl + '/api/bp-category',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        bloodPressure: 'normal'
-                    })
-                }
-            );
+		async function wakeServer() {
+			try {
+				const response = await fetch(serverUrl + '/api/ping');
+				const data = await response.json();
 
-            const bpData = await bpResponse.json();
+				if (!response.ok) {
+					throw new Error(data.message || 'Wake request failed.');
+				}
 
-            if (!bpResponse.ok) {
-                throw new Error(bpData.message);
-            }
+				document.getElementById('result').textContent = data.message;
+			} catch (error) {
+				console.error('Wake Server error:', error);
 
-            // Test BMI API.
-            const bmiResponse = await fetch(
-                serverUrl + '/api/bmi',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        heightFeet: 6,
-                        heightInches: 4,
-                        weight: 185
-                    })
-                }
-            );
+				document.getElementById('result').textContent =
+					'Error connecting to server: ' + error.message;
+			}
+		}
 
-            const bmiData = await bmiResponse.json();
+		async function testCalculator() {
+			const result = document.getElementById('result');
 
-            if (!bmiResponse.ok) {
-                throw new Error(bmiData.message);
-            }
+			try {
+				// Test blood pressure API.
+				const bpResponse = await fetch(
+					serverUrl + '/api/bp-category',
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							bloodPressure: 'normal'
+						})
+					}
+				);
 
-            // Test overall risk API.
-            const riskResponse = await fetch(
-                serverUrl + '/api/risk-category',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        age: 20,
-                        bmiCategory: bmiData.category,
-                        bpCategory: bpData.category,
-                        familyHistory: []
-                    })
-                }
-            );
+				const bpData = await bpResponse.json();
 
-            const riskData = await riskResponse.json();
+				if (!bpResponse.ok) {
+					throw new Error(bpData.message);
+				}
 
-            if (!riskResponse.ok) {
-                throw new Error(riskData.message);
-            }
+				// Test BMI API.
+				const bmiResponse = await fetch(
+					serverUrl + '/api/bmi',
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							heightFeet: 6,
+							heightInches: 4,
+							weight: 185
+						})
+					}
+				);
 
-            result.textContent =
-                'Test successful! BMI: ' + bmiData.bmi +
-                ', BMI category: ' + bmiData.category +
-                ', Risk score: ' + riskData.score +
-                ', Risk category: ' + riskData.category;
+				const bmiData = await bmiResponse.json();
 
-        } catch (error) {
-            console.error('Test Calculator API error:', error);
+				if (!bmiResponse.ok) {
+					throw new Error(bmiData.message);
+				}
 
-            result.textContent =
-                'Error connecting to or testing server: ' + error.message;
-        }
-    }
-</script>
+				// Test overall risk API.
+				const riskResponse = await fetch(
+					serverUrl + '/api/risk-category',
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							age: 20,
+							bmiCategory: bmiData.category,
+							bpCategory: bpData.category,
+							familyHistory: []
+						})
+					}
+				);
+
+				const riskData = await riskResponse.json();
+
+				if (!riskResponse.ok) {
+					throw new Error(riskData.message);
+				}
+
+				result.textContent =
+					'Test successful! BMI: ' + bmiData.bmi +
+					', BMI category: ' + bmiData.category +
+					', Risk score: ' + riskData.score +
+					', Risk category: ' + riskData.category;
+
+			} catch (error) {
+				console.error('Test Calculator API error:', error);
+
+				result.textContent =
+					'Error connecting to or testing server: ' + error.message;
+			}
+		}
+	</script>
+
+</body>
+</html>
