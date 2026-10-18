@@ -1,18 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8" />
-	<title>MERNa-NE</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Insurance Risk Calculator API Tester</title>
 </head>
+
 <body>
-	<h1>MERNa: This is a Node.js and Express hosted Microsoft Azure Template</h1>
-	<p>This repository serves as a template that can be used to create a Node.js and Express based website that can easily
-	be hosted on Microsoft Azure.</p><br />
 
-	MERNa stands for MongoDB, Express, React, abd Node on Azure.
+    <h1>Health Insurance Risk Calculator API</h1>
 
-	Additional application functionality includes:<br />
-	<a href="fetching-from-server.html">Accessing Node.js Server-Side Application Programming Interfaces (APIs)</a><br />
-	<a href="fetching-remote-dog-breeds.html">Accessing Remote Application Programming Interfaces (APIs)</a>
+    <p>This page tests the RESTful APIs provided by the Node.js server.</p>
+
+    <button onclick="wakeServer()">Wake Server</button>
+    <button onclick="testCalculator()">Test Calculator API</button>
+
+    <p id="result"></p>
+
+    <script>
+        const serverUrl = '';
+
+        async function wakeServer() {
+            try {
+                const response = await fetch(serverUrl + '/api/wake');
+                const data = await response.json();
+
+                document.getElementById('result').textContent = data.message;
+            } catch (error) {
+                document.getElementById('result').textContent =
+                    'Error connecting to server.';
+            }
+        }
+
+        async function testCalculator() {
+            try {
+                const response = await fetch(serverUrl + '/api/calculate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        bloodPressure: 'normal',
+                        age: 20,
+                        heightFeet: 6,
+                        heightInches: 4,
+                        weight: 185,
+                        familyHistory: ['none']
+                    })
+                });
+
+                const data = await response.json();
+
+                document.getElementById('result').textContent = data.message;
+            } catch (error) {
+                document.getElementById('result').textContent =
+                    'Error connecting to server.';
+            }
+        }
+    </script>
+
 </body>
 </html>
