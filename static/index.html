@@ -5,6 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Health Insurance Risk Calculator API Tester</title>
 </head>
+<style>
+
+body {
+    background-color: white;
+    color: #e62300;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    text-align: center;
+}
+
+h1 {
+    color: #e62300;
+    background: none;
+    font-size: 48px;
+    margin-bottom: 35px;
+}
+
+p {
+    color: #e62300;
+    font-size: 24px;
+    margin-bottom: 35px;
+}
+
+button {
+    background-color: #e62300;
+    color: white;
+    border: none;
+    padding: 25px 45px;
+    margin: 10px 20px;
+    font-size: 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    min-width: 280px;
+}
+
+button:hover {
+    background-color: darkred;
+}
+
+button + button {
+    margin-left: 30px;
+}
+
+#result {
+    font-size: 22px;
+    max-width: 800px;
+}
+
+
+h1 {
+    font-weight: 900;
+    -webkit-text-stroke: 1.5px black;
+}
+
+p {
+    font-weight: bold;
+    -webkit-text-stroke: 0.5px black;
+}
+
+
+</style>
 
 <body>
 
@@ -12,8 +78,10 @@
 
     <p>This page tests the RESTful APIs provided by the Node.js server.</p>
 
+    <div class="button-container">
     <button onclick="wakeServer()">Wake Server</button>
     <button onclick="testCalculator()">Test Calculator API</button>
+	</div>
 
     <p id="result"></p>
 
